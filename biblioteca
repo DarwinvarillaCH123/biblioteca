@@ -1,0 +1,184 @@
+package logica;
+
+public class Usuario {
+    private String nombreUsuario;
+    private String clave;
+    private String rol;
+
+    public Usuario(String nombreUsuario, String clave, String rol) {
+        this.nombreUsuario = nombreUsuario;
+        this.clave = clave;
+        this.rol = rol;
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public String getClave() {
+        return clave;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public boolean validarCredenciales(String usuario, String password) {
+        return this.nombreUsuario.equals(usuario) && this.clave.equals(password);
+    }
+}
+package logica;
+
+public class Libro {
+    private String titulo;
+    private String autor;
+    private String isbn;
+    private int stock;
+
+    public Libro(String titulo, String autor, String isbn, int stock) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.isbn = isbn;
+        this.stock = stock;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+}
+package vistas;
+
+import logica.Usuario;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class LoginFrame extends JFrame {
+    private JTextField txtusuario;
+    private JPasswordField pwdcontraseña;
+    private JButton btningresar;
+
+    private Usuario admin = new Usuario("admin", "admin123", "admin");
+    private Usuario user = new Usuario("user", "user123", "user");
+
+    public LoginFrame() {
+        setTitle("Inicio de Sesión");
+        setSize(300, 200);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(null);
+
+        JLabel lblusuario = new JLabel("Usuario:");
+        lblusuario.setBounds(20, 20, 80, 25);
+        add(lblusuario);
+
+        txtusuario = new JTextField();
+        txtusuario.setBounds(100, 20, 150, 25);
+        add(txtusuario);
+
+        JLabel lblcontraseña = new JLabel("Contraseña:");
+        lblcontraseña.setBounds(20, 60, 80, 25);
+        add(lblcontraseña);
+
+        pwdcontraseña = new JPasswordField();
+        pwdcontraseña.setBounds(100, 60, 150, 25);
+        add(pwdcontraseña);
+
+        btningresar = new JButton("Ingresar");
+        btningresar.setBounds(100, 100, 100, 25);
+        add(btningresar);
+
+        btningresar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String usuario = txtusuario.getText();
+                String clave = new String(pwdcontraseña.getPassword());
+
+                if (admin.validarCredenciales(usuario, clave)) {
+                    new AdminFrame().setVisible(true);
+                    dispose();
+                } else if (user.validarCredenciales(usuario, clave)) {
+                    new UserFrame().setVisible(true);
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Credenciales incorrectas");
+                }
+            }
+        });
+    }
+
+    public static void main(String[] args) {
+        new LoginFrame().setVisible(true);
+    }
+}
+package vistas;
+
+import logica.Libro;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+public class AdminFrame extends JFrame {
+    private ArrayList<Libro> listaLibros = new ArrayList<>();
+    // Aquí podrías agregar componentes como JTextFields para los datos del libro
+    // y JButtons para las acciones de crear, editar, eliminar libros
+
+    public AdminFrame() {
+        setTitle("Administración de Libros");
+        setSize(600, 400);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(null);
+
+        // Implementa los botones y funcionalidades CRUD
+    }
+}
+package vistas;
+
+import logica.Libro;
+
+import javax.swing.*;
+import java.util.ArrayList;
+
+public class UserFrame extends JFrame {
+    private ArrayList<Libro> listaLibros = new ArrayList<>();
+
+    public UserFrame() {
+        setTitle("Visualización de Libros");
+        setSize(600, 400);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(null);
+
+        // Implementar tabla para mostrar la lista de libros
+    }
+}
